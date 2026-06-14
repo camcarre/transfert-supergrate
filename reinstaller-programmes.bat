@@ -17,14 +17,17 @@ if errorlevel 1 (
   pause & exit /b 1
 )
 
-set "IN=%USERPROFILE%\Desktop\programmes.json"
+set "IN=C:\transfert\programmes.json"
+if not exist "%IN%" set "IN=%USERPROFILE%\Desktop\programmes.json"
 if not exist "%IN%" (
-  echo [ERREUR] Fichier introuvable : %IN%
+  echo [ERREUR] Fichier "programmes.json" introuvable.
   echo.
   echo Mets le fichier "programmes.json" (cree sur l'ancien PC)
-  echo sur le BUREAU de ce PC, puis relance ce script.
+  echo dans C:\transfert (ou sur le Bureau) de ce PC,
+  echo puis relance ce script.
   pause & exit /b 1
 )
+echo Fichier utilise : %IN%
 
 echo Reinstallation en cours... ca peut etre LONG.
 echo Laisse tourner. Certaines apps demanderont une validation.

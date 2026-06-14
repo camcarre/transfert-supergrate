@@ -17,8 +17,9 @@ if errorlevel 1 (
   pause & exit /b 1
 )
 
-set "OUT=%USERPROFILE%\Desktop\programmes.json"
-set "TXT=%USERPROFILE%\Desktop\programmes-lisible.txt"
+if not exist "C:\transfert" mkdir "C:\transfert"
+set "OUT=C:\transfert\programmes.json"
+set "TXT=C:\transfert\programmes-lisible.txt"
 
 echo Creation de la liste des programmes... patiente.
 echo.
@@ -30,11 +31,15 @@ winget list > "%TXT%" 2>&1
 echo.
 echo ================================================
 echo  TERMINE.
-echo  Fichiers crees sur ton BUREAU :
+echo  Fichiers crees dans le dossier :  C:\transfert
 echo    - programmes.json          (pour reinstaller auto)
 echo    - programmes-lisible.txt   (la liste a lire)
+echo.
+echo  Pour ouvrir le dossier : copie-colle C:\transfert
+echo  dans la barre d'adresse de l'Explorateur.
 echo.
 echo  >> Copie "programmes.json" sur le PC NEUF <<
 echo     (cle USB, ou via le partage reseau)
 echo ================================================
+start "" "C:\transfert"
 pause
