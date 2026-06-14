@@ -37,26 +37,44 @@ if errorlevel 1 (
   pause & exit /b 1
 )
 
+echo.
+echo [OK] Connexion a l'ancien PC reussie.
+echo.
+
 set "SRC=\\%SRCIP%\c$\Users\%SRCUSER%"
 set "DST=%USERPROFILE%"
 set "LOG=%USERPROFILE%\Desktop\copie-log.txt"
 
-echo.
+REM --- Verifie que le dossier utilisateur existe vraiment ---
+if not exist "%SRC%\" (
+  echo [ERREUR] Le dossier "%SRC%" n'existe pas.
+  echo Le nom d'utilisateur tape est sans doute faux.
+  echo.
+  echo Voici les dossiers utilisateurs disponibles sur l'ancien PC :
+  echo ------------------------------------------------
+  dir /b "\\%SRCIP%\c$\Users"
+  echo ------------------------------------------------
+  echo Relance le script et tape EXACTEMENT un de ces noms.
+  net use \\%SRCIP%\c$ /delete /y >nul 2>&1
+  pause & exit /b 1
+)
+
 echo ================================================
 echo  Source      : %SRC%
 echo  Destination : %DST%
 echo  Journal     : %LOG%
 echo ================================================
 echo.
-echo  Copie en cours... ca peut etre LONG.
+echo  Copie en cours. Les fichiers vont DEFILER ci-dessous.
 echo  Laisse tourner, garde les 2 PC sur le hotspot.
 echo.
 
 REM --- Copie chaque dossier perso (AppData est ignore automatiquement) ---
 for %%F in (Desktop Documents Downloads Pictures Music Videos Favorites Links Contacts Searches) do (
   if exist "%SRC%\%%F" (
-    echo --- Copie de %%F ---
-    robocopy "%SRC%\%%F" "%DST%\%%F" /E /R:1 /W:1 /XJ /NFL /NDL /NP /TEE /LOG+:"%LOG%"
+    echo.
+    echo ============ DOSSIER : %%F ============
+    robocopy "%SRC%\%%F" "%DST%\%%F" /E /R:1 /W:1 /XJ /NP /TEE /LOG+:"%LOG%"
   )
 )
 
