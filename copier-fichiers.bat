@@ -78,6 +78,19 @@ for %%F in (Desktop Documents Downloads Pictures Music Videos Favorites Links Co
   )
 )
 
+REM --- Au cas ou les dossiers sont dans OneDrive (Bureau/Documents/Images) ---
+if exist "%SRC%\OneDrive\" (
+  echo.
+  echo ### Dossiers OneDrive detectes, copie aussi de OneDrive... ###
+  for %%F in (Desktop Bureau Documents Downloads Telechargements Pictures Images Music Musique Videos) do (
+    if exist "%SRC%\OneDrive\%%F" (
+      echo.
+      echo ======= OneDrive : %%F =======
+      robocopy "%SRC%\OneDrive\%%F" "%DST%\%%F" /E /R:1 /W:1 /XJ /NP /TEE /LOG+:"%LOG%"
+    )
+  )
+)
+
 echo.
 echo ================================================
 echo  COPIE TERMINEE.
